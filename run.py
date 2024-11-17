@@ -1,7 +1,10 @@
 import asyncio
+from src.processes.gmap import GMap
 
 async def main():
-    pass
+    gmap = GMap()
+    await gmap.start()
+
 
 if __name__ == "__main__":
     city = input("enter city name: ")
