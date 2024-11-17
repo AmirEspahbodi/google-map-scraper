@@ -1,0 +1,38 @@
+{
+  "place_results": {
+    "title": "Pike's Landing",
+    "data_id": "0x51325b1733fa71bf:0xd609c9524d75cbc7",
+    "reviews_link": "https://serpapi.com/search.json?engine=google_maps_reviews&hl=en&place_id=0x51325b1733fa71bf:0xd609c9524d75cbc7",
+    "gps_coordinates": {
+      "latitude": 64.8299557,
+      "longitude": -147.8488774
+    },
+    "thumbnail": "https://lh5.googleusercontent.com/p/AF1QipNtwheOCQ97QFrUNIwKYUoAPiV81rpiW5cIiQco=w152-h86-k-no",
+    "rating": 3.9,
+    "reviews": 825,
+    "price": "$$",
+    "type": [
+      "American restaurant"
+    ],
+    "description": "Burgers, seafood, steak & river views. Pub fare alongside steak & seafood, served in a dining room with river views & a waterfront patio.",
+    "service_options": {},
+    "extensions": ["..."],
+    "address": "4438 Airport Way, Fairbanks, AK 99709",
+    "website": "https://www.pikeslodge.com/pikes-landing",
+    "phone": "(907) 479-6500",
+    "hours": ["..."],
+    "images": ["..."],
+    "user_reviews": {
+      "summary": ["..."],
+      "most_relevant": [
+        {
+          "username": "Vasisht Raghavendra",
+          "rating": 5,
+          "description": "Restaurant with a view and good food. The Biggest Berry Blast cocktail is a highly recommended one. For food we tried the Alaska Crab with Mushrooms and the Bisque. Both were excellent. For dessert we tried the Bread Pudding - probably not the best we have had. The ambiance is very nice and the servers are friendly.",
+          "images": [""],
+          "date": "2 months ago"
+        }
+      ]
+    }
+  }
+}
