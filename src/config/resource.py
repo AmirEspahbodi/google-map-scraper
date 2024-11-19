@@ -6,6 +6,7 @@ from playwright.async_api import (
 )
 from typing import Literal
 
+
 class RuntimeResource(metaclass=Singleton):
     playwright: AsyncPlaywright
     browsers: dict[Literal["firefox", "safari", "chrome"], Browser]
