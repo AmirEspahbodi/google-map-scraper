@@ -34,5 +34,5 @@ class CityListingsScraperProcess:
         )
         return (chrome_page, firefox_page, safari_page)
 
-    async def complate_before_you_continue_page(self, page):
+    async def complete_before_you_continue_page(self, page):
         pass
