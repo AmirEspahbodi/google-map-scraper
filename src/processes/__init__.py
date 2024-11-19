@@ -1,3 +1,3 @@
-from .city_place_scraper import CityPlaceScraper
+from .city_listings_scraper import CityListingsScraperProcess
 
-__all__ = ["CityPlaceScraper"]
+__all__ = ["CityListingsScraperProcess"]
