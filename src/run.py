@@ -1,13 +1,13 @@
 import asyncio
-from processes.gmap import GMap
+from processes import CityPlaceScraper
 from config import RuntimeResource
 
 
 async def main():
     await resource.initialize_browsers()
 
-    gmap = GMap(city, place_title)
-    await gmap.start()
+    city_place_scraper = CityPlaceScraper(city, place_title)
+    await city_place_scraper.start()
 
     await resource.free()
 
