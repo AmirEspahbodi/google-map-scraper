@@ -33,10 +33,8 @@ class GotoMapBo:
         await page.goto(self.start_url, timeout=60000)
         await page.wait_for_timeout(5000)
 
-
     async def __complete_before_you_continue_page(self, page: Page):
         pass
-
 
     async def __open_tab(self) -> tuple[Page, Page, Page]:
         """

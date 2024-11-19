@@ -2,18 +2,15 @@ import asyncio
 from random import random
 from playwright.async_api import Page
 
+
 class CompleteSearchBo:
     def __init__(self, search_query):
         self.search_query = search_query
 
     async def complete_search(self, *pages):
-        await asyncio.gather(
-            *[self.__do_search(page) for page in pages]
-        )
+        await asyncio.gather(*[self.__do_search(page) for page in pages])
 
-        await asyncio.gather(
-            *[self.__scroll(page) for page in pages]
-        )
+        await asyncio.gather(*[self.__scroll(page) for page in pages])
 
     async def __scroll(self, page: Page):
         pass

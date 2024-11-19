@@ -16,10 +16,8 @@ class CityListingsScraperProcess:
             safari_page,
         ) = await self.goto_map_bo.goto_google_map()
 
-        await self.complete_search_bo.complete_search(chrome_page, firefox_page, safari_page)
-
+        await self.complete_search_bo.complete_search(
+            chrome_page, firefox_page, safari_page
+        )
 
         await self.scrap_data_bo.scrap_page(chrome_page, firefox_page, safari_page)
-
-
-
