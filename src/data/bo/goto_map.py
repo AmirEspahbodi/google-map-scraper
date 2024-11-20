@@ -10,7 +10,7 @@ class GotoMapBo:
         self.resource = RuntimeResource()
 
     async def goto_google_map(self):
-        chrome_page, firefox_page, safari_page = self.__open_tab()
+        chrome_page, firefox_page, safari_page = await self.__open_tab()
 
         await asyncio.gather(
             *[

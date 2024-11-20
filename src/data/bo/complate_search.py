@@ -9,11 +9,27 @@ class CompleteSearchBo:
 
     async def complete_search(self, *pages):
         await asyncio.gather(*[self.__do_search(page) for page in pages])
-
         await asyncio.gather(*[self.__scroll(page) for page in pages])
 
-    async def __scroll(self, page: Page):
-        pass
+    async def __scroll(self, page: Page, total=1000):
+        await page.hover('//a[contains(@href, "https://www.google.com/maps/place")]')
+
+        # this variable is used to detect if the bot
+        # scraped the same number of listings in the previous iteration
+        previously_counted = 0
+        while True:
+            await page.mouse.wheel(0, 10000)
+            await page.wait_for_timeout(5000)
+            scraped_listings_count = await page.locator(
+                '//a[contains(@href, "https://www.google.com/maps/place")]'
+            ).count()
+            if scraped_listings_count >= total:
+                break
+            else:
+                # logic to break from loop to not run infinitely
+                # in case arrived at all available listings
+                if scraped_listings_count == previously_counted:
+                    break
 
     async def __do_search(self, page: Page):
         try:
