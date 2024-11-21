@@ -6,6 +6,7 @@ from config import RuntimeResource
 async def main():
     resource = RuntimeResource()
     await resource.initialize_browsers()
+    await resource.open_browser_tabs()
 
     city_listings_scraper = CityListingsScraperProcess(city, place_title, verb)
     await city_listings_scraper.start()

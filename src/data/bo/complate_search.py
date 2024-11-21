@@ -1,64 +1,71 @@
 import asyncio
 from random import random, randint
-from playwright.async_api import Page
-from lxml import etree
+from data.dao import BrowserPage
+from config import RuntimeResource
 
 
 class CompleteSearchBo:
     def __init__(self, search_query):
         self.search_query = search_query
+        self.resource = RuntimeResource()
 
-    async def complete_search(self, pages: list[Page]):
-        await asyncio.gather(*[self.__do_search(page) for page in pages])
-        await asyncio.gather(*[self.__scroll(page) for page in pages])
+    async def complete_search(self):
+        browsers_pages = self.resource.browsers_pages
+        await asyncio.gather(*[self.__do_search(browser_page) for browser_page in browsers_pages])
+        await asyncio.gather(*[self.__scroll(browser_page) for browser_page in browsers_pages])
 
-    async def __scroll(self, page: Page, total=1000):
-        await page.hover('//a[contains(@href, "https://www.google.com/maps/place")]')
+    async def __scroll(self, browser_page: BrowserPage, total=1000):
+        try:
+            await browser_page.page.hover('//a[contains(@href, "https://www.google.com/maps/place")]')
 
-        # this variable is used to detect if the bot
-        # scraped the same number of listings in the previous iteration
+            # this variable is used to detect if the bot
+            # scraped the same number of listings in the previous iteration
 
-        previously_counted = 0
-        while True:
-            await page.mouse.wheel(0, 10000)
-            await page.wait_for_timeout(randint(4000, 6500))
-            scraped_listings_count = await page.locator(
-                '//a[contains(@href, "https://www.google.com/maps/place")]'
-            ).count()
+            previously_counted = 0
+            while True:
+                await browser_page.page.mouse.wheel(0, 10000)
+                await browser_page.page.wait_for_timeout(randint(4000, 6500))
+                scraped_listings_count = await browser_page.page.locator(
+                    '//a[contains(@href, "https://www.google.com/maps/place")]'
+                ).count()
 
-            print(
-                f"scrooling ... in page {page}, total listing = {scraped_listings_count}"
-            )
+                print(
+                    f"scrooling ... in page {browser_page.page}, total listing = {scraped_listings_count}"
+                )
 
-            break
-
-            if scraped_listings_count >= total:
                 break
 
-            if scraped_listings_count == previously_counted:
-                break
+                if scraped_listings_count >= total:
+                    break
 
-            previously_counted = scraped_listings_count
+                if scraped_listings_count == previously_counted:
+                    break
 
-        print("scrooling finished ...")
+                previously_counted = scraped_listings_count
 
-    async def __do_search(self, page: Page):
+            print("scrooling finished ...")
+        except BaseException as e:
+            print(f"error in CompleteSearchBo in __scroll function\nerror: {e}\npage={browser_page.name}")
+
+            
+
+    async def __do_search(self, browser_page: BrowserPage):
         try:
             await asyncio.sleep(random() * 5)
             search_box_input_xpath = "//input[@id='searchboxinput']"
             search_box_button_xpath = "//button[@id='searchbox-searchbutton']"
 
-            page_search_box_input = await page.wait_for_selector(
+            page_search_box_input = await browser_page.page.wait_for_selector(
                 search_box_input_xpath, timeout=10000
             )
-            page_search_box_button = await page.wait_for_selector(
+            page_search_box_button = await browser_page.page.wait_for_selector(
                 search_box_button_xpath, timeout=10000
             )
 
             await page_search_box_input.type(self.search_query)
             await page_search_box_button.press("Enter")
 
-            await page.wait_for_load_state("networkidle")
+            await browser_page.page.wait_for_load_state("networkidle")
         except BaseException as e:
             # self.logger.error()
-            print(f"error in doing search in do_search function {e}")
+            print(f"error in CompleteSearchBo in __do_search function\nerror: {e}\npage={browser_page.name}")

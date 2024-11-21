@@ -10,8 +10,8 @@ class CityListingsScraperProcess:
         self.goto_map_bo = GotoMapBo(self.start_url)
 
     async def start(self):
-        pages = await self.goto_map_bo.goto_google_map()
+        await self.goto_map_bo.goto_google_map()
 
-        await self.complete_search_bo.complete_search(pages)
+        await self.complete_search_bo.complete_search()
 
-        await self.scrap_data_bo.scrap_page(pages)
+        await self.scrap_data_bo.scrap_page()
