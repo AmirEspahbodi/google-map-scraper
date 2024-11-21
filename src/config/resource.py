@@ -1,4 +1,5 @@
 from typing import Literal
+import random
 from playwright.async_api import (
     async_playwright,
     Playwright as AsyncPlaywright,
@@ -7,6 +8,7 @@ from playwright.async_api import (
 
 from utils.singleton import Singleton
 from data.dao import BrowserPage
+from data.user_agents import _CHROME, _WEBKIT
 
 
 class RuntimeResource(metaclass=Singleton):
@@ -29,25 +31,34 @@ class RuntimeResource(metaclass=Singleton):
             }
 
     async def open_browser_tabs(self):
-        chrome_context = await self.browsers["chrome"].new_context()
-        firefox_context = await self.browsers["firefox"].new_context()
-        safari_context = await self.browsers["safari"].new_context()
+        chrome_page1 = await (
+            await self.browsers["chrome"].new_context(user_agent=random.choice(_CHROME))
+        ).new_page()
+        # firefox_page1 = await (await self.browsers["firefox"].new_context()).new_page()
+        safari_page1 = await (
+            await self.browsers["safari"].new_context(user_agent=random.choice(_WEBKIT))
+        ).new_page()
 
-        chrome_page1 = await chrome_context.new_page()
-        firefox_page1 = await firefox_context.new_page()
-        safari_page1 = await safari_context.new_page()
+        chrome_page2 = await (
+            await self.browsers["chrome"].new_context(user_agent=random.choice(_CHROME))
+        ).new_page()
+        # firefox_page2 = await (await self.browsers["firefox"].new_context()).new_page()
+        safari_page2 = await (
+            await self.browsers["safari"].new_context(user_agent=random.choice(_WEBKIT))
+        ).new_page()
 
-        chrome_page2 = await chrome_context.new_page()
-        firefox_page2 = await firefox_context.new_page()
-        safari_page2 = await safari_context.new_page()
+        # chrome_page3 = await (
+        #     await self.browsers["chrome"].new_context(user_agent=random.choice(_CHROME))
+        # ).new_page()
 
         self.browsers_pages = [
             BrowserPage("chrome_page_1", chrome_page1),
-            BrowserPage("firefox_page_1", firefox_page1),
+            # BrowserPage("firefox_page_1", firefox_page1),
             BrowserPage("safari_page_1", safari_page1),
             BrowserPage("chrome_page_2", chrome_page2),
-            BrowserPage("firefox_page_2", firefox_page2),
+            # BrowserPage("firefox_page_2", firefox_page2),
             BrowserPage("safari_page_2", safari_page2),
+            # BrowserPage("chrome_page_3", chrome_page3),
         ]
 
     async def free(self):
