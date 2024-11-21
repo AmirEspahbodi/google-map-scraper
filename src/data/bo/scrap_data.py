@@ -1,8 +1,10 @@
 import asyncio
 from lxml import etree
 from data.dao import BrowserPage
+from playwright.async_api import Page, Locator
 from random import choice
 from config import RuntimeResource
+from data.dto import Listing
 
 
 class ScrapDataBo:
@@ -15,21 +17,108 @@ class ScrapDataBo:
         result = await asyncio.gather(
             *[self.__extract_listings(browser_page) for browser_page in browsers_pages]
         )
+        
+        len = 0
+        for re in result:
+            print('=====================================================')
+            broser_page_name = re[0]
+            print(broser_page_name)
+            for k, v in re[1].items():
+                print('----------------------')
+                print(k)
+                print(v)
 
         listings_for_page = self.__assign_unique_listings_to_pages(result)
 
-        temp1 = {
-            browser_page.name: browser_page.page for browser_page in browsers_pages
-        }
-        await asyncio.gather(
-            *[
-                self.__scrap_listings(temp1[page_name], listings)
-                for page_name, listings in listings_for_page.items()
-            ]
-        )
+        for page, listings in listings_for_page.items():
+            print(page)
+            for l in listings:
+                print(l)
+            
+            print('--------------------------------------')
+        # temp1 = {
+        #     browser_page.name: browser_page.page for browser_page in browsers_pages
+        # }
+        # final_listings = await asyncio.gather(
+        #     *[
+        #         self.__scrap_listings(temp1[page_name], listings)
+        #         for page_name, listings in listings_for_page.items()
+        #     ]
+        # )
+        # return final_listings
 
-    async def __scrap_listings(self, page: BrowserPage, listings):
-        pass
+    async def __scrap_listings(self, page: Page, listings: list[Locator]):
+        base_selector = "//div[@id='QA0Szd']//div[@jstcache='4']//div[contains(@class, 'm6QErb WNBkOb XiKgde')]//div[contains(@class, 'm6QErb DxyBCb kA9KIf dS8AEf XiKgde')]"
+        parser = etree.HTMLParser()
+        for listing in listings:
+            listing_list = []
+            try:
+                await listing.click()
+                await page.wait_for_timeout(7000)
+                page_content = await page.content()
+                tree = etree.fromstring(page_content, parser)
+
+                # listing = Listing()
+
+                # get listing title
+                title_fa = tree.xpath(
+                    base_selector
+                    + "//div[contains(@class, 'TIHn2')]//div[contains(@class, 'lMbq3e')]//h1//span[2]/text()"
+                )
+                title_en = tree.xpath(
+                    base_selector
+                    + "//div[contains(@class, 'TIHn2')]//div[contains(@class, 'lMbq3e')]//h1/text()"
+                )
+                title = title_en or title_fa
+
+                # get listing category
+                category = tree.xpath(
+                    base_selector
+                    + "//div[contains(@class, 'TIHn2')]//button[contains(@class, 'DkEaL')]/text()"
+                )
+                
+                # get listing addrress
+                address = tree.xpath(
+                    base_selector
+                    + "//div[contains(@class, 'm6QErb XiKgde')]//button[@class='CsEnBe' and @data-tooltip='Copy address']/@aria-label"
+                )
+
+                # get phone number
+                phone_number = tree.xpath(
+                    base_selector
+                    + "//div[contains(@class, 'm6QErb XiKgde')]//button[@class='CsEnBe' and @data-tooltip='Copy phone number']/@aria-label"
+                )
+
+                # get website
+                website = tree.xpath(
+                    base_selector
+                    + "//div[contains(@class, 'm6QErb XiKgde')]//a[@class='CsEnBe' and @data-tooltip='Open website']/@href"
+                )
+
+                # # get location
+                location_in_map = page.url
+
+                # active hourse
+                active_hours = tree.xpath(
+                    base_selector
+                    + "//div[contains(@class, 'OqCZI fontBodyMedium WVXvdc')]/div[2]/@aria-label"
+                )
+
+                print(f"title = {title}")
+                print(f"category = {category}")
+                print(f"address = {address}")
+                print(f"phone_number = {phone_number}")
+                print(f"website = {website}")
+                print(f"location_in_map = {location_in_map}")
+                print(f"active_hours = {active_hours}")
+                print(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+
+                # listing_list.append(listing)
+
+            except Exception as e:
+                print(f"Error occured: {e}")
+
+        return listing_list
 
     @staticmethod
     def __assign_unique_listings_to_pages(input: list[dict]):

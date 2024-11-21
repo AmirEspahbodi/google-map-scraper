@@ -17,7 +17,7 @@ async def main():
 if __name__ == "__main__":
     # city = input("enter city name: ")
     # title = input("enter place base title: ")
-    city = "ساری"
+    city = "تهران"
     verb = "در"
     place_title = "مارکت"
     asyncio.run(main())

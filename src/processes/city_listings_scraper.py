@@ -14,4 +14,4 @@ class CityListingsScraperProcess:
 
         await self.complete_search_bo.complete_search()
 
-        await self.scrap_data_bo.scrap_page()
+        final_listings = await self.scrap_data_bo.scrap_page()
