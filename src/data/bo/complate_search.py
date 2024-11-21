@@ -1,13 +1,14 @@
 import asyncio
-from random import random
+from random import random, randint
 from playwright.async_api import Page
+from lxml import etree
 
 
 class CompleteSearchBo:
     def __init__(self, search_query):
         self.search_query = search_query
 
-    async def complete_search(self, *pages):
+    async def complete_search(self, pages: list[Page]):
         await asyncio.gather(*[self.__do_search(page) for page in pages])
         await asyncio.gather(*[self.__scroll(page) for page in pages])
 
@@ -16,20 +17,30 @@ class CompleteSearchBo:
 
         # this variable is used to detect if the bot
         # scraped the same number of listings in the previous iteration
+
         previously_counted = 0
         while True:
             await page.mouse.wheel(0, 10000)
-            await page.wait_for_timeout(5000)
+            await page.wait_for_timeout(randint(4000, 6500))
             scraped_listings_count = await page.locator(
                 '//a[contains(@href, "https://www.google.com/maps/place")]'
             ).count()
+
+            print(
+                f"scrooling ... in page {page}, total listing = {scraped_listings_count}"
+            )
+
+            break
+
             if scraped_listings_count >= total:
                 break
-            else:
-                # logic to break from loop to not run infinitely
-                # in case arrived at all available listings
-                if scraped_listings_count == previously_counted:
-                    break
+
+            if scraped_listings_count == previously_counted:
+                break
+
+            previously_counted = scraped_listings_count
+
+        print("scrooling finished ...")
 
     async def __do_search(self, page: Page):
         try:

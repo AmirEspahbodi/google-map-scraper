@@ -7,7 +7,7 @@ async def main():
     resource = RuntimeResource()
     await resource.initialize_browsers()
 
-    city_listings_scraper = CityListingsScraperProcess(city, place_title)
+    city_listings_scraper = CityListingsScraperProcess(city, place_title, verb)
     await city_listings_scraper.start()
 
     await resource.free()
@@ -16,6 +16,7 @@ async def main():
 if __name__ == "__main__":
     # city = input("enter city name: ")
     # title = input("enter place base title: ")
-    city = "sari"
-    place_title = "store"
+    city = "ساری"
+    verb = "در"
+    place_title = "مارکت"
     asyncio.run(main())
