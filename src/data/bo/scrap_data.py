@@ -18,14 +18,17 @@ class ScrapDataBo:
 
         listings_for_page = self.__assign_unique_listings_to_pages(result)
 
-        for page_name, listings in listings_for_page.items():
-            print(page_name)
-            print(listings)
-            print()
+        temp1 = {
+            browser_page.name: browser_page.page for browser_page in browsers_pages
+        }
+        await asyncio.gather(
+            *[
+                self.__scrap_listings(temp1[page_name], listings)
+                for page_name, listings in listings_for_page.items()
+            ]
+        )
 
-        # await asyncio.gather(*[self.__scrap_listings(browser_page) for browser_page in browsers_pages])
-
-    async def __scrap_listings(self, page: BrowserPage):
+    async def __scrap_listings(self, page: BrowserPage, listings):
         pass
 
     @staticmethod
@@ -45,6 +48,11 @@ class ScrapDataBo:
         """
 
         # step 1
+        """
+        in this step we created a dict 
+        and added all listings with same key to a list with their browser tab name (browser_tab_name, listing)
+        and assigned this list to dict by key
+        """
         temp1 = {}
         for result in input:
             browser_page = result[0]
@@ -61,13 +69,23 @@ class ScrapDataBo:
                         temp1[k] = [(browser_page.name, v)]
 
         # step 2
-        temp2 = {}
+        """
+        in this step we randomly chosing (browser_tab_name, listing) from each dict item
+        in other word for each key we chose a browser and listing
+        this browsers tab will sccrap that listing later 
+        """
+        temp2 = []
         for key, value in temp1.items():
-            temp2[key] = choice(value)
+            temp2.append(choice(value))
 
         # step3
+        """
+        post processing data
+        for each browser we will create list ao listing to scrape
+        based on listings selected on step 2
+        """
         final_result = {}
-        for value in temp2.values():
+        for value in temp2:
             if value[0] in final_result:
                 final_result[value[0]].append(value[1])
             else:
