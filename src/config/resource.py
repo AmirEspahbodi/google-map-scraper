@@ -32,7 +32,7 @@ class RuntimeResource(metaclass=Singleton):
         chrome_context = await self.browsers["chrome"].new_context()
         firefox_context = await self.browsers["firefox"].new_context()
         safari_context = await self.browsers["safari"].new_context()
-        
+
         chrome_page1 = await chrome_context.new_page()
         firefox_page1 = await firefox_context.new_page()
         safari_page1 = await safari_context.new_page()
@@ -40,7 +40,6 @@ class RuntimeResource(metaclass=Singleton):
         chrome_page2 = await chrome_context.new_page()
         firefox_page2 = await firefox_context.new_page()
         safari_page2 = await safari_context.new_page()
-
 
         self.browsers_pages = [
             BrowserPage("chrome_page_1", chrome_page1),

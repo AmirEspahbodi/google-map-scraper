@@ -1,3 +1,4 @@
+import traceback
 import asyncio
 from random import random, randint
 from data.dao import BrowserPage
@@ -18,7 +19,7 @@ class CompleteSearchBo:
             *[self.__scroll(browser_page) for browser_page in browsers_pages]
         )
 
-    async def __scroll(self, browser_page: BrowserPage, total=1000):
+    async def __scroll(self, browser_page: BrowserPage, total=10):
         try:
             await browser_page.page.hover(
                 '//a[contains(@href, "https://www.google.com/maps/place")]'
@@ -39,8 +40,6 @@ class CompleteSearchBo:
                     f"scrooling ... in page {browser_page.page}, total listing = {scraped_listings_count}"
                 )
 
-                break
-
                 if scraped_listings_count >= total:
                     break
 
@@ -52,8 +51,10 @@ class CompleteSearchBo:
             print("scrooling finished ...")
         except BaseException as e:
             print(
-                f"error in CompleteSearchBo in __scroll function\nerror: {e}\npage={browser_page.name}"
+                f"error in CompleteSearchBo in __scroll function\npage={browser_page.name}"
             )
+            print(f"Error: {e}")
+            traceback.print_exc()
 
     async def __do_search(self, browser_page: BrowserPage):
         try:
@@ -75,5 +76,7 @@ class CompleteSearchBo:
         except BaseException as e:
             # self.logger.error()
             print(
-                f"error in CompleteSearchBo in __do_search function\nerror: {e}\npage={browser_page.name}"
+                f"error in CompleteSearchBo in __do_search function\npage={browser_page.name}"
             )
+            print(f"Error: {e}")
+            traceback.print_exc()

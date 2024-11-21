@@ -11,7 +11,7 @@ class CityListingsScraperProcess:
 
     async def start(self):
         await self.goto_map_bo.goto_google_map()
-
         await self.complete_search_bo.complete_search()
-
         final_listings = await self.scrap_data_bo.scrap_page()
+        for re in final_listings:
+            print(re)
