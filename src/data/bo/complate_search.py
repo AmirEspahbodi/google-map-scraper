@@ -11,12 +11,18 @@ class CompleteSearchBo:
 
     async def complete_search(self):
         browsers_pages = self.resource.browsers_pages
-        await asyncio.gather(*[self.__do_search(browser_page) for browser_page in browsers_pages])
-        await asyncio.gather(*[self.__scroll(browser_page) for browser_page in browsers_pages])
+        await asyncio.gather(
+            *[self.__do_search(browser_page) for browser_page in browsers_pages]
+        )
+        await asyncio.gather(
+            *[self.__scroll(browser_page) for browser_page in browsers_pages]
+        )
 
     async def __scroll(self, browser_page: BrowserPage, total=1000):
         try:
-            await browser_page.page.hover('//a[contains(@href, "https://www.google.com/maps/place")]')
+            await browser_page.page.hover(
+                '//a[contains(@href, "https://www.google.com/maps/place")]'
+            )
 
             # this variable is used to detect if the bot
             # scraped the same number of listings in the previous iteration
@@ -45,9 +51,9 @@ class CompleteSearchBo:
 
             print("scrooling finished ...")
         except BaseException as e:
-            print(f"error in CompleteSearchBo in __scroll function\nerror: {e}\npage={browser_page.name}")
-
-            
+            print(
+                f"error in CompleteSearchBo in __scroll function\nerror: {e}\npage={browser_page.name}"
+            )
 
     async def __do_search(self, browser_page: BrowserPage):
         try:
@@ -68,4 +74,6 @@ class CompleteSearchBo:
             await browser_page.page.wait_for_load_state("networkidle")
         except BaseException as e:
             # self.logger.error()
-            print(f"error in CompleteSearchBo in __do_search function\nerror: {e}\npage={browser_page.name}")
+            print(
+                f"error in CompleteSearchBo in __do_search function\nerror: {e}\npage={browser_page.name}"
+            )

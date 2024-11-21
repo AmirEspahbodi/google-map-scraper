@@ -22,12 +22,8 @@ class GotoMapBo:
         )
 
         await asyncio.gather(
-            *[
-                self.__visit_page(browser_page.page)
-                for browser_page in browsers_pages
-            ]
+            *[self.__visit_page(browser_page.page) for browser_page in browsers_pages]
         )
-
 
     async def __visit_page(self, page: Page):
         await asyncio.sleep(random() * 5)
@@ -36,4 +32,3 @@ class GotoMapBo:
 
     async def __complete_before_you_continue_page(self, page: Page):
         pass
-
