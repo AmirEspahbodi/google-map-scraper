@@ -7,17 +7,19 @@ from config import RuntimeResource
 from data.dao import BrowserPage
 from .base_search import BaseSearchBo
 
+
 class BrowserTabBo(BaseSearchBo):
     def __init__(self, start_url):
         self.start_url = start_url
         self.resource = RuntimeResource()
 
-
     async def clear_search_bar(self, search_query):
         await asyncio.gather(
-            *[self.__clear_search_bar(page, search_query) for page in self.resource.browsers_pages]
+            *[
+                self.__clear_search_bar(page, search_query)
+                for page in self.resource.browsers_pages
+            ]
         )
-
 
     async def __clear_search_bar(self, browser_page: BrowserPage, search_query):
         try:
@@ -30,7 +32,6 @@ class BrowserTabBo(BaseSearchBo):
 
             await page_search_box_input.select_text()
             await page_search_box_input.type(search_query)
-            
 
             await browser_page.page.wait_for_load_state("networkidle")
         except BaseException as e:
@@ -40,18 +41,15 @@ class BrowserTabBo(BaseSearchBo):
             )
             print(f"Error: {e}")
             traceback.print_exc()
-        
-        await self._do_search(browser_page)
 
+        await self._do_search(browser_page)
 
     async def goto_google_map(self) -> list[BrowserPage]:
         browsers_pages = self.resource.browsers_pages
 
-
         await asyncio.gather(
             *[self.__visit_page(browser_page.page) for browser_page in browsers_pages]
         )
-
 
         await asyncio.gather(
             *[
@@ -65,6 +63,11 @@ class BrowserTabBo(BaseSearchBo):
         await page.goto(self.start_url, timeout=60000)
         await page.wait_for_timeout(10000)
 
-
     async def __complete_before_you_continue_page(self, page: Page):
-        pass
+
+        selector = "//div[contains(@role, 'main')]//div[contains(@class, 'AIC7ge')]//div[contains(@class, 'VtwTSb')]//form[@action='https://consent.google.com/save'][2]"
+        accept_all = page.locator(selector)
+        print(accept_all)
+        await accept_all.click()
+        
+        await page.wait_for_timeout(10000)

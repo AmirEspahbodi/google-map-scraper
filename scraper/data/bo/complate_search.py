@@ -5,6 +5,7 @@ from data.dao import BrowserPage
 from config import RuntimeResource
 from .base_search import BaseSearchBo
 
+
 class CompleteSearchBo(BaseSearchBo):
     def __init__(self):
         self.resource = RuntimeResource()
@@ -12,7 +13,10 @@ class CompleteSearchBo(BaseSearchBo):
     async def complete_search(self, search_query):
         browsers_pages = self.resource.browsers_pages
         await asyncio.gather(
-            *[self._do_search(browser_page, search_query) for browser_page in browsers_pages]
+            *[
+                self._do_search(browser_page, search_query)
+                for browser_page in browsers_pages
+            ]
         )
         await asyncio.gather(
             *[self.__scroll(browser_page) for browser_page in browsers_pages]

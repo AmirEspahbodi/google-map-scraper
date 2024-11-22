@@ -34,7 +34,7 @@ class ScrapDataBo:
         browser_selector = {
             browser_page.name: browser_page.page for browser_page in browsers_pages
         }
-        
+
         print("start scraping listings")
         pre_final_listings = await asyncio.gather(
             *[
@@ -284,9 +284,13 @@ class ScrapDataBo:
                         "title": title[0] if title else "",
                         "category": category[0] if category else "",
                         "address": address[0] if address else "",
-                        "phone_number": phone_number[0] if phone_number else "09373110981",
+                        "phone_number": phone_number[0]
+                        if phone_number
+                        else "09373110981",
                         "website": website[0] if website else "",
-                        "location_in_map": location_in_map[0] if location_in_map else "",
+                        "location_in_map": location_in_map[0]
+                        if location_in_map
+                        else "",
                         "active_hours": active_hours[0] if active_hours else "",
                         "browser_page_name": browser_page_name,
                         "key": key,

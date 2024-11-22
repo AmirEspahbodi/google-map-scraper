@@ -9,15 +9,12 @@ from playwright.async_api import (
 from utils import Singleton
 from data.dao import BrowserPage
 from data.user_agents import _CHROME, _WEBKIT
-import asyncio
 
 
 class RuntimeResource(metaclass=Singleton):
     playwright: AsyncPlaywright
     browsers: dict[Literal["firefox", "safari", "chrome"], Browser]
     browsers_pages = list[BrowserPage]
-    search_query_queue = asyncio.Queue(maxsize=0)
-
 
     def __init__(self):
         print("initialising resource ...")
@@ -44,19 +41,27 @@ class RuntimeResource(metaclass=Singleton):
     async def open_browser_tabs(self):
         if not self.browsers_pages:
             chrome_page1 = await (
-                await self.browsers["chrome"].new_context(user_agent=random.choice(_CHROME))
+                await self.browsers["chrome"].new_context(
+                    user_agent=random.choice(_CHROME)
+                )
             ).new_page()
             # firefox_page1 = await (await self.browsers["firefox"].new_context()).new_page()
             safari_page1 = await (
-                await self.browsers["safari"].new_context(user_agent=random.choice(_WEBKIT))
+                await self.browsers["safari"].new_context(
+                    user_agent=random.choice(_WEBKIT)
+                )
             ).new_page()
 
             chrome_page2 = await (
-                await self.browsers["chrome"].new_context(user_agent=random.choice(_CHROME))
+                await self.browsers["chrome"].new_context(
+                    user_agent=random.choice(_CHROME)
+                )
             ).new_page()
             # # firefox_page2 = await (await self.browsers["firefox"].new_context()).new_page()
             safari_page2 = await (
-                await self.browsers["safari"].new_context(user_agent=random.choice(_WEBKIT))
+                await self.browsers["safari"].new_context(
+                    user_agent=random.choice(_WEBKIT)
+                )
             ).new_page()
 
             # chrome_page3 = await (
@@ -73,7 +78,6 @@ class RuntimeResource(metaclass=Singleton):
             ]
         else:
             raise RuntimeError("tabs are open now, first close them")
-
 
     async def free(self):
         for name, browser in self.browsers.items():
