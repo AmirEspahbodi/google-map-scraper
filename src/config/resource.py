@@ -19,6 +19,7 @@ class RuntimeResource(metaclass=Singleton):
     def __init__(self):
         print("initialising resource ...")
         self.browsers: dict[Literal["firefox", "safari", "chrome"], Browser] = {}
+        self.browsers_pages: list[BrowserPage] = []
 
     async def initialize_browsers(self):
         if not self.browsers:
@@ -50,16 +51,18 @@ class RuntimeResource(metaclass=Singleton):
         # chrome_page3 = await (
         #     await self.browsers["chrome"].new_context(user_agent=random.choice(_CHROME))
         # ).new_page()
-
-        self.browsers_pages = [
-            BrowserPage("chrome_page_1", chrome_page1),
-            # BrowserPage("firefox_page_1", firefox_page1),
-            BrowserPage("safari_page_1", safari_page1),
-            BrowserPage("chrome_page_2", chrome_page2),
-            # BrowserPage("firefox_page_2", firefox_page2),
-            BrowserPage("safari_page_2", safari_page2),
-            # BrowserPage("chrome_page_3", chrome_page3),
-        ]
+        self.browsers_pages.clear()
+        self.browsers_pages.extend(
+            [
+                BrowserPage("chrome_page_1", chrome_page1),
+                # BrowserPage("firefox_page_1", firefox_page1),
+                BrowserPage("safari_page_1", safari_page1),
+                BrowserPage("chrome_page_2", chrome_page2),
+                # BrowserPage("firefox_page_2", firefox_page2),
+                BrowserPage("safari_page_2", safari_page2),
+                # BrowserPage("chrome_page_3", chrome_page3),
+            ]
+        )
 
     async def free(self):
         for name, browser in self.browsers.items():

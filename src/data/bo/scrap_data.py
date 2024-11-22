@@ -16,10 +16,12 @@ class ScrapDataBo:
     async def scrap_page(self):
         browsers_pages = self.resource.browsers_pages
 
+        print("extracting listings")
         result = await asyncio.gather(
             *[self.__extract_listings(browser_page) for browser_page in browsers_pages]
         )
 
+        print("pre processing on listings, assign unique listing to each broser")
         listings_for_page = self.__assign_unique_listings_to_pages(result)
 
         # for page_name, listings_and_key in listings_for_page.items():
@@ -32,6 +34,8 @@ class ScrapDataBo:
         browser_selector = {
             browser_page.name: browser_page.page for browser_page in browsers_pages
         }
+        
+        print("start scraping listings")
         pre_final_listings = await asyncio.gather(
             *[
                 self.__scrap_listings(browser_selector[page_name], listings, page_name)
@@ -225,6 +229,7 @@ class ScrapDataBo:
         for listing_key in listings_keys:
             listing, key = listing_key
             try:
+                print(f"scraping {key}")
                 await listing.click()
                 await page.wait_for_timeout(7000)
                 page_content = await page.content()
