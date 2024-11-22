@@ -19,13 +19,14 @@ The scraper extracts the following data fields from Google Maps listings:
 
 1. Clone this repository:
    ```bash
-   git clone <repository-url>
-   cd <repository-folder>
+   git clone git@github.com:AmirEspahbodi/google-map-scraper.git
+   cd git@github.com:AmirEspahbodi/google-map-scraper.git
    ```
 
 2. Install the required Python dependencies:
    ```bash
-   pip install -r requirements.txt
+   poetry install
+   poetry env use python3.13
    ```
 
 ## How to Use
@@ -42,13 +43,14 @@ The scraper works by targeting specific cities and job titles. You must define t
 3. Edit the file to include your desired search query. Example:
    ```python
    city = "London"
-   job_title = "markets"
+   place_title = "markets"
    ```
 4. Save the file after making the changes.
 
 5. Run the scraper:
    ```bash
-   python src/run.py
+   cd src
+   python run.py
    ```
 
 6. The scraped data will be saved to a file in your preferred format (e.g., CSV, JSON, etc.).
@@ -58,7 +60,7 @@ The scraper works by targeting specific cities and job titles. You must define t
 To scrape data for **markets in London**, set the following in `src/run.py`:
 ```python
 city = "London"
-job_title = "markets"
+place_title = "markets"
 ```
 Run the script, and the scraper will gather data specific to this query.
 
