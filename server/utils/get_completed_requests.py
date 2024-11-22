@@ -1,5 +1,9 @@
+from os import listdir
+from os.path import isfile, join
+
+
 def get_completed_requests():
-    pass
+    return map(lambda x: x.strip().split('.')[0].strip(),[f for f in listdir("../results/") if isfile(join("../results/", f))])
 
 
 if __name__ == "__main__":

@@ -67,7 +67,6 @@ class BrowserTabBo(BaseSearchBo):
 
         selector = "//div[contains(@role, 'main')]//div[contains(@class, 'AIC7ge')]//div[contains(@class, 'VtwTSb')]//form[@action='https://consent.google.com/save'][2]"
         accept_all = page.locator(selector)
-        print(accept_all)
-        await accept_all.click()
-        
-        await page.wait_for_timeout(10000)
+        if await accept_all.count():
+            await accept_all.click()
+            await page.wait_for_timeout(10000)
