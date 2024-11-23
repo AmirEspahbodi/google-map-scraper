@@ -48,17 +48,17 @@ Returns the current status of the server.
    cd git@github.com:AmirEspahbodi/google-map-scraper.git
 
 2. Install dependencies:
-  ```json
+  ```bash
      poetry install
   ```
 
 3. Install Playwright browsers:
-  ```json
+  ```bash
      playwright install
   ```
 
 5. Start the application:
-  ```json
+  ```bash
      poetry run python run_app.py
   ```
    
