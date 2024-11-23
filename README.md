@@ -44,14 +44,21 @@ Returns the current status of the server.
 ## Setup and Installation
 
 1. Clone the repository:
-   git clone <repository_url>
-   cd <repository_directory>
+   git clone git@github.com:AmirEspahbodi/google-map-scraper.git
+   cd git@github.com:AmirEspahbodi/google-map-scraper.git
 
 2. Install dependencies:
-   poetry install
+  ```json
+     poetry install
+  ```
 
 3. Install Playwright browsers:
-   playwright install
+  ```json
+     playwright install
+  ```
 
-4. Start the application:
-   poetry run python run_app.py
+5. Start the application:
+  ```json
+     poetry run python run_app.py
+  ```
+   
