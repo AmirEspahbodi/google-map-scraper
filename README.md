@@ -1,88 +1,57 @@
 # Google Maps Scraper
 
-A Python-based scraper for extracting detailed listing data from Google Maps. The scraper gathers a variety of information about businesses or listings while using rotating user agents to bypass Google's anti-scraping mechanisms.
+This project is a Google Maps scraper built using Python and Playwright. It consists of two main parts: the **scraper** and the **server**.
 
 ## Features
 
-The scraper extracts the following data fields from Google Maps listings:
+- **Server**: Provides two API endpoints:
+  - `/status`: Check the status of the application.
+  - `/request`: Accepts a JSON payload to enqueue search queries.
+- **Scraper**: Listens to a Redis queue for search queries, opens multiple tabs with different browsers and user agents, and scrapes Google Maps.
 
-1. **Job Title**: The title or name of the business or job.
-2. **Photo and Images**: URLs or paths to images related to the listing.
-3. **Job Group/Category**: The type or category of the listing (e.g., Restaurant, Store, etc.).
-4. **Location**: Latitude and longitude coordinates of the listing.
-5. **Phone Number**: Contact number associated with the listing.
-6. **Hours and Days of Operation**: Business hours and operating days.
-7. **Website**: Official website URL of the listing.
-8. **Text Address**: Full textual address of the listing.
+## API Details
 
-## Installation
+### `/request` Endpoint
 
-1. Clone this repository:
-   ```bash
-   git clone git@github.com:AmirEspahbodi/google-map-scraper.git
-   cd git@github.com:AmirEspahbodi/google-map-scraper.git
-   ```
+Accepts a JSON payload with the following structure:
 
-2. Install the required Python dependencies:
-   ```bash
-   poetry install
-   poetry env use python3.13
-   ```
-
-## How to Use
-
-The scraper works by targeting specific cities and job titles. You must define the target city and job title in the `src/run.py` file before running the scraper. For example:
-
-- **Markets in London**
-- **Bars in Houston**
-
-### Steps:
-
-1. Open the `src/run.py` file in your text editor or IDE.
-2. Locate the section where the target city and job title are defined.
-3. Edit the file to include your desired search query. Example:
-   ```python
-   city = "London"
-   place_title = "markets"
-   ```
-4. Save the file after making the changes.
-
-5. Run the scraper:
-   ```bash
-   cd src
-   python run.py
-   ```
-
-6. The scraped data will be saved to a file in your preferred format (e.g., CSV, JSON, etc.).
-
-### Example Usage:
-
-To scrape data for **markets in London**, set the following in `src/run.py`:
-```python
-city = "London"
-place_title = "markets"
+```json
+{
+  "place": "",
+  "verb": "",
+  "city": ""
+}
 ```
-Run the script, and the scraper will gather data specific to this query.
+The scraper combines these fields to create a search query and enqueues it for processing.
 
-## Anti-Scraping Measures
+### `/request` Endpoint
+Returns the current status of the server.
 
-This scraper uses the following techniques to avoid detection and bypass Google's blockers:
 
-- **Rotating User Agents**: The scraper frequently changes the User-Agent header to mimic different devices and browsers.
-- **Request Rate Limiting**: To prevent triggering anti-scraping mechanisms, the scraper includes delays between requests.
 
-## Legal Disclaimer
+## How It Works
 
-This tool is intended for educational and personal use only. Scraping Google Maps may violate their terms of service. Use this scraper responsibly and at your own risk.
+1. The **server** receives requests via the `/request` endpoint and enqueues the search queries into a Redis queue.
+2. The **scraper** listens to the Redis queue, dequeues search queries, and opens multiple tabs with different browser instances and user agents.
+3. The scraper processes the search query by interacting with Google Maps.
 
-## License
+## Requirements
 
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
+- Python 3.12
+- [Poetry](https://python-poetry.org/) for dependency management
+- Redis server
 
-## Contributions
+## Setup and Installation
 
-Contributions are welcome! Feel free to fork the repository and submit pull requests.
+1. Clone the repository:
+   git clone <repository_url>
+   cd <repository_directory>
 
-## Contact
+2. Install dependencies:
+   poetry install
 
-For any issues or suggestions, please open an issue or contact the developer directly.
+3. Install Playwright browsers:
+   playwright install
+
+4. Start the application:
+   poetry run python run_app.py
