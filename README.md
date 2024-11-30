@@ -40,6 +40,7 @@ Returns the current status of the server.
 - Python 3.12
 - [Poetry](https://python-poetry.org/) for dependency management
 - Redis server
+- Playwright
 
 ## Setup and Installation
 
