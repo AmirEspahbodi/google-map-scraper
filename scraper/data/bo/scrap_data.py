@@ -1,12 +1,11 @@
 import traceback
 import asyncio
-import json
 from lxml import etree
 from data.dao import BrowserPage
 from playwright.async_api import Page, Locator
 from random import choice
 from config import RuntimeResource
-from data.dto import Listing
+from ._scrap_pictures import scrap_pictures
 
 
 class ScrapDataBo:
@@ -190,7 +189,7 @@ class ScrapDataBo:
                             result[f"{phone} - {short_address}"].append(listing)
                         else:
                             result[f"{phone} - {short_address}"] = [listing]
-                    elif f"{title} - {short_address}" and short_address:
+                    elif title and short_address:
                         if f"{title} - {short_address}" in result:
                             result[f"{title} - {short_address}"].append(listing)
                         else:
@@ -279,6 +278,12 @@ class ScrapDataBo:
                     + "//div[contains(@class, 'OqCZI fontBodyMedium WVXvdc')]/div[2]/@aria-label"
                 )
 
+                # get pictures
+                # pictures_path = await scrap_pictures(page, base_selector, key, browser_page_name)
+                
+                # load content again
+                
+                
                 listing_list.append(
                     {
                         "title": title[0] if title else "",
@@ -294,11 +299,14 @@ class ScrapDataBo:
                         "active_hours": active_hours[0] if active_hours else "",
                         "browser_page_name": browser_page_name,
                         "key": key,
+                        # "pictures_path": pictures_path,
                     }
                 )
 
             except Exception as e:
                 print("in ScrapDataBo.__scrap_listings:")
+                print(f"browser: {browser_page_name}")
+                print(f"key: {key}")
                 print(f"Error: {e}")
                 traceback.print_exc()
 
