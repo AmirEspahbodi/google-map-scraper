@@ -5,12 +5,10 @@ from config import RuntimeResource
 
 async def main():
     resource = RuntimeResource()
-    await resource.initialize_browsers()
 
     city_listings_scraper = CityListingsScraperProcess()
     await city_listings_scraper.start()
 
-    await resource.free()
 
 
 if __name__ == "__main__":

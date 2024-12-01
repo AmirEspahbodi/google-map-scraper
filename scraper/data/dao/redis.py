@@ -11,12 +11,20 @@ class RedisDao:
             encoding="UTF-8",
         )
 
-    def dequeue(self, queue_name=RedisConfig.REDIS_SEARCH_QUERY_QUEUE_NAME):
+    def dequeue(
+        self, queue_name=RedisConfig.REDIS_REQUESTED_SEARCH_QUERY_QUEUE_NAME
+    ):
         if self.redis_client.exists(queue_name):
             search_query = self.redis_client.lpop(queue_name)
-            self.set_inprocessing(search_query)
             return search_query
-        return False
+        return None
 
     def set_inprocessing(self, search_query):
-        self.redis_client.set(RedisConfig.REDIS_IN_PROCESSING_SEARCH_QUERY, search_query)
+        self.redis_client.set(
+            RedisConfig.REDIS_IN_PROCESSING_SEARCH_QUERY, search_query
+        )
+
+    def remove_inprocessing(self):
+        self.redis_client.delete(
+            RedisConfig.REDIS_IN_PROCESSING_SEARCH_QUERY
+        )

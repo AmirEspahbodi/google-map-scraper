@@ -16,6 +16,7 @@ pandas = "^2.2.3"
 openpyxl = "^3.1.5"
 fastapi = {extras = ["standard"], version = "^0.115.5"}
 redis = "^5.2.0"
+aiofiles = "^24.1.0"
 
 
 [build-system]

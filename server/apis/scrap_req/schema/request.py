@@ -2,14 +2,28 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class RequestBody(BaseModel):
-    city: str = Field(..., example="تهران")
-    verb: str = Field(..., example="در")
-    place_title: str = Field(..., example="مارکت")
-
+    province: str
+    city: str
+    verb: str
+    listing_type: str
+    listing_category: str
     model_config = ConfigDict(
         json_schema_extra={
-            "city": "تهران",
-            "verb": "در",
-            "place_title": "مارکت"
+            "examples": [
+                {
+                    "province": "تهران",
+                    "city": "تهران",
+                    "verb": "در",
+                    "listing_type": "آبمیوه و بستنی",
+                    "listing_category": "فروشگاه و کسب و کار های محلی",
+                },
+                {
+                    "province": "تهران",
+                    "city": "کرج",
+                    "verb": "در",
+                    "listing_type": "دیزی سرا",
+                    "listing_category": "خدمات غذایی و پذیرایی",
+                },
+            ]
         },
     )
