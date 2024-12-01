@@ -20,14 +20,16 @@ Accepts a JSON payload with the following structure:
 
 ```json
 {
-  "place": "",
-  "verb": "",
-  "city": ""
+  "city": "",
+  "listing_category": "",
+  "listing_type": "",
+  "province": "",
+  "verb": ""
 }
 ```
-The scraper combines these fields to create a search query and enqueues it for processing.
+The scraper combines these fields (listing_type + verb + city + province) to create a search query and enqueues it for processing. use all fields to create excel file for storing search result. 
 
-### `/request` Endpoint
+### `/status` Endpoint
 Returns the current status of the server.
 
 
@@ -58,7 +60,8 @@ Returns the current status of the server.
 
 3. Install Playwright browsers:
   ```bash
-     playwright install
+     poetry run playwright install
+     poetry run playwright install-deps
   ```
 
 5. Start the application:
