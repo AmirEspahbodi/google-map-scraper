@@ -1,7 +1,7 @@
 # Google Maps Scraper
 
 - This project is a Google Maps scraper built using Python and Playwright. It consists of two main parts: the **scraper** and the **server**.
-- The Scraper scrap title, phone, address, latitude and longitude, category, website, active_hours and first picture of listing.
+- for each listing The Scraper scrap title, phone, address, latitude and longitude, category, website, active_hours and first picture of listing.
 - it will scrap all liastings that represented in a scrollbar after enter search query (after scrolling to the end of scrollbar).
 
 
