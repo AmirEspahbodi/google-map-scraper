@@ -49,8 +49,8 @@ Returns the current status of the server.
 ## Setup and Installation
 
 1. Clone the repository:
-   git clone git@github.com:AmirEspahbodi/google-map-scraper.git
-   cd git@github.com:AmirEspahbodi/google-map-scraper.git
+   - git clone git@github.com:AmirEspahbodi/google-map-scraper.git
+   - cd google-map-scraper
 
 2. Install dependencies:
   ```bash
